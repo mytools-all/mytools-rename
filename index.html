@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>批量重命名</title>
+    <link rel="stylesheet" href="tool.css" />
+    <style>
+      .rename-tabs {
+        padding: 10px 16px;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        gap: 8px;
+      }
+      .rename-tabs button {
+        border: 0;
+        padding: 8px 16px;
+      }
+      .rename-tabs .active {
+        color: var(--accent);
+        background: var(--soft);
+      }
+      .rule-area {
+        padding: 16px;
+        border-bottom: 1px solid var(--border);
+        min-height: 98px;
+        background: var(--surface);
+      }
+      #rules {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+      #rules input {
+        width: 130px;
+      }
+      #rules label {
+        gap: 6px;
+      }
+      #rules textarea {
+        width: 100%;
+        min-height: 80px;
+      }
+      #file-pane {
+        flex: 1;
+        min-height: 0;
+        overflow: auto;
+      }
+      .file-actions {
+        display: flex;
+        gap: 8px;
+        padding: 10px 16px;
+        align-items: center;
+        border-bottom: 1px solid var(--border);
+        flex-wrap: wrap;
+      }
+      .empty-box {
+        padding: 45px 18px;
+        text-align: center;
+        color: var(--muted);
+        border: 1px dashed var(--border);
+        margin: 20px;
+      }
+      .new-name {
+        color: var(--accent);
+      }
+      td {
+        font-size: 12px;
+      }
+      td input {
+        padding: 3px 5px;
+        width: 100%;
+        min-width: 120px;
+      }
+      .path {
+        max-width: 210px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        color: var(--muted);
+      }
+      .remove-file {
+        border: 0;
+        padding: 2px 7px;
+      }
+      .footer-count {
+        font-size: 12px;
+        color: var(--muted);
+      }
+      .confirm-box {
+        background: var(--surface);
+        padding: 10px 16px;
+        border-top: 1px solid var(--border);
+        display: flex;
+        gap: 8px;
+        align-items: center;
+      }
+      #summary {
+        flex: 1;
+      }
+      .danger {
+        color: var(--danger);
+      }
+      .row-number {
+        color: var(--muted);
+        width: 40px;
+      }
+      #confirm-bar {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        width: 100%;
+      }
+      #confirm-bar strong {
+        flex: 1;
+      }
+      label input[type="checkbox"] {
+        width: auto !important;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <nav id="modes" class="rename-tabs">
+        <button data-mode="replace" class="active">查找替换</button
+        ><button data-mode="append">追加文本</button
+        ><button data-mode="sequence">自动序号</button
+        ><button data-mode="case">大小写</button
+        ><button data-mode="manual">编辑</button><span class="spacer"></span
+        ><button id="theme">◐</button>
+      </nav>
+      <section class="rule-area"><div id="rules"></div></section>
+      <div class="file-actions">
+        <button id="add-files">＋ 选择文件</button
+        ><button id="add-folder">＋ 选择文件夹</button
+        ><button id="directory">导入目录中的文件</button
+        ><label><input id="recursive" type="checkbox" />含子目录</label
+        ><span class="spacer"></span
+        ><label><input id="extension" type="checkbox" />修改扩展名</label
+        ><select id="sort">
+          <option value="name">名称 ↑</option>
+          <option value="desc">名称 ↓</option>
+          <option value="modified">修改时间 ↓</option></select
+        ><button id="extract">提取名称</button
+        ><button id="clear">清空列表</button>
+      </div>
+      <section id="file-pane">
+        <div id="empty" class="empty-box">
+          <strong>拖入或选择需要重命名的文件 / 文件夹</strong>
+          <p>支持多选文件、导入目录；设置规则后实时预览新名称</p>
+          <span>选择文件时将请求授权所在目录，执行前会显示确认</span>
+        </div>
+        <table id="table" class="hidden">
+          <thead>
+            <tr>
+              <th class="row-number">序号</th>
+              <th>原名称</th>
+              <th>新名称</th>
+              <th>所在目录</th>
+              <th>状态</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="files"></tbody>
+        </table>
+      </section>
+      <footer class="confirm-box">
+        <span id="summary" class="footer-count">共 0 项</span
+        ><button id="undo" disabled>撤销上次重命名</button
+        ><button id="commit" class="primary" disabled>执行重命名</button>
+        <div id="confirm-bar" class="hidden">
+          <strong id="confirm-text"></strong
+          ><button id="cancel-confirm">取消</button
+          ><button id="apply-confirm" class="primary">确认执行</button>
+        </div>
+      </footer>
+      <footer id="status" class="status" role="status"></footer>
+    </main>
+    <script type="module" src="app.mjs"></script>
+  </body>
+</html>

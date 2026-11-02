@@ -1,0 +1,27 @@
+{
+  "name": "mytools-rename",
+  "description": "文件批量重命名",
+  "apiVersion": 1,
+  "main": "index.html",
+  "pluginName": "文件批量重命名",
+  "version": "0.1.0",
+  "capabilities": [
+    "fs.pickdirectory",
+    "fs.pickfiles",
+    "fs.search",
+    "fs.renamemany",
+    "clipboard.write",
+    "fs.importdropped"
+  ],
+  "features": [
+    {
+      "code": "rename",
+      "explain": "打开文件批量重命名",
+      "cmds": [
+        "重命名",
+        "批量重命名",
+        "rename"
+      ]
+    }
+  ]
+}
