@@ -241,4 +241,10 @@ $("#apply-confirm").onclick = action(async () => {
   }
 });
 rules();
-ready(() => status("选择文件或文件夹 → 设置规则 → 预览 → 执行；支持撤销"));
+ready(async (env) => {
+  const context = env?.launchContext ? await call("context.read", {types:["files"]}) : null;
+  if (context?.files?.length) {
+    add(context.files);
+    status("已导入面板唤出前选中的 " + context.files.length + " 个条目，请核对重命名预览");
+  } else status("选择文件或文件夹 → 设置规则 → 预览 → 执行；支持撤销");
+});
